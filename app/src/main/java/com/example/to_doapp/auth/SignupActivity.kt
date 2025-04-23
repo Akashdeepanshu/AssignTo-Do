@@ -3,27 +3,24 @@ package com.example.to_doapp.auth
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.coroutineScope
-import com.example.to_doapp.Boss
-import com.example.to_doapp.Employee
 import com.example.to_doapp.MainActivity
-import com.example.to_doapp.R
+
 import com.example.to_doapp.databinding.ActivitySignupBinding
-import com.example.to_doapp.utils.utils
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
+import com.example.to_doapp.network.ApiClient
+import com.example.to_doapp.network.ApiService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class SignupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySignupBinding
     private var userImageUri: Uri? = null
     private var userType: String = ""
+
 
     private val selectImage = registerForActivityResult(ActivityResultContracts.GetContent()) {
         userImageUri = it
@@ -47,7 +44,6 @@ class SignupActivity : AppCompatActivity() {
 
 
         binding.btnregister.setOnClickListener {
-
             val name = binding.etNameInput.text.toString()
             val email = binding.etEmailInput.text.toString()
             val password = binding.etPasswordInput.text.toString()
@@ -63,49 +59,40 @@ class SignupActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            createUser(name, email, password)
+
+            val imageUrl = ""
+            val registerRequest = ApiService.RegisterUserRequest(name, email, password, userType, imageUrl)
+
+
+            registerUser(registerRequest)
         }
     }
 
-    private fun createUser(name: String, email: String, password: String) {
-//        utils.showDialog(this)
+    private fun registerUser(registerRequest: ApiService.RegisterUserRequest) {
+        val apiService = ApiClient.instance
 
-        lifecycle.coroutineScope.launch {
-            try {
-                val authResult = FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password).await()
-                val uid = authResult.user?.uid
-
-                if (uid != null) {
-                    val database = FirebaseDatabase.getInstance()
-                    val userRef = if (userType == "Boss") {
-                        database.getReference("Boss").child(uid)
-                    } else {
-                        database.getReference("Employee").child(uid)
-                    }
-
-                    val userObject = if (userType == "Boss") {
-                        Boss(uid, name, email, password)
-                    } else {
-                        Employee(uid, name, email, password)
-                    }
-
-                    userRef.setValue(userObject).await()
-
-//                    utils.hideDialog()
+        apiService.registerUser(registerRequest).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
                     Toast.makeText(this@SignupActivity, "User Registered Successfully", Toast.LENGTH_SHORT).show()
+
+
+                    val sharedPref = getSharedPreferences("login", MODE_PRIVATE)
+                    sharedPref.edit().putBoolean("isLoggedIn", true).apply()
+
 
                     startActivity(Intent(this@SignupActivity, MainActivity::class.java))
                     finish()
                 } else {
-//                    utils.hideDialog()
                     Toast.makeText(this@SignupActivity, "Registration failed", Toast.LENGTH_SHORT).show()
                 }
-
-            } catch (e: Exception) {
-//                utils.hideDialog()
-                Toast.makeText(this@SignupActivity, e.message ?: "Something went wrong", Toast.LENGTH_LONG).show()
-                Log.e("SignupActivity", "Error: ${e.message}", e)
             }
-        }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(this@SignupActivity, "Error: ${t.message}", Toast.LENGTH_LONG).show()
+            }
+        })
     }
+
+
 }

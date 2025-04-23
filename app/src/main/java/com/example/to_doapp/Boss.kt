@@ -1,8 +1,10 @@
 package com.example.to_doapp
 
 data class Boss(
-    val bossId : String? = null,
-    val bossname : String? = null,
-    val bossemail : String? = null,
-    val bosspassword : String? = null,
+    val uid: String = "",
+    val name: String = "",
+    val email: String = "",
+    val password: String = "",
+    val imageUrl: String = ""
 )
+
