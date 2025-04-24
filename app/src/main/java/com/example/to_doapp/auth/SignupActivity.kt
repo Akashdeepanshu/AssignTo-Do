@@ -7,7 +7,7 @@ import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.example.to_doapp.MainActivity
+import com.example.to_doapp.BossMainActivity
 
 import com.example.to_doapp.databinding.ActivitySignupBinding
 import com.example.to_doapp.network.ApiClient
@@ -81,7 +81,7 @@ class SignupActivity : AppCompatActivity() {
                     sharedPref.edit().putBoolean("isLoggedIn", true).apply()
 
 
-                    startActivity(Intent(this@SignupActivity, MainActivity::class.java))
+                    startActivity(Intent(this@SignupActivity, BossMainActivity::class.java))
                     finish()
                 } else {
                     Toast.makeText(this@SignupActivity, "Registration failed", Toast.LENGTH_SHORT).show()
