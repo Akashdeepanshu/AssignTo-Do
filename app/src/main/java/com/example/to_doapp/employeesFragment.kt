@@ -9,14 +9,17 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.to_doapp.auth.SigninActivity
 import com.example.to_doapp.databinding.FragmentEmployeesBinding
+import com.example.to_doapp.network.ApiClient
+import com.example.to_doapp.network.ApiService
 
 
 class employeesFragment : Fragment() {
 
     private lateinit var binding: FragmentEmployeesBinding
-
+    private lateinit var employeeAdapter: EmployeesAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,22 +29,54 @@ class employeesFragment : Fragment() {
         binding = FragmentEmployeesBinding.inflate(inflater, container, false)
 
 
-
-        binding.tbEmployee.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.logout -> {
-                    showLogoutDialog()
-                    true
+        binding.apply {
+            tbEmployee.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.logout -> {
+                        showLogoutDialog()
+                        true
+                    }
+                    else -> false
                 }
-                else -> false
             }
         }
+        prepareRVForEmployeesAdapter()
+        showAllEmployeeData()
 
-        binding.btn1.setOnClickListener {
-            findNavController().navigate(R.id.action_employeesFragment_to_worksFragment)
-        }
 
         return binding.root
+    }
+
+    private fun showAllEmployeeData() {
+        val apiService = ApiClient.instance
+        apiService.getAllEmployeeData().enqueue(object : retrofit2.Callback<List<ApiService.Employeeinfo>> {
+            override fun onResponse(
+                call: retrofit2.Call<List<ApiService.Employeeinfo>>,
+                response: retrofit2.Response<List<ApiService.Employeeinfo>>
+            ) {
+                if (response.isSuccessful && response.body() != null) {
+                    val employeeList = response.body()
+                    employeeAdapter.differ.submitList(employeeList)
+                } else {
+                    // Handle API failure (e.g. empty response)
+                    println("Error: ${response.code()} ${response.message()}")
+                }
+            }
+
+            override fun onFailure(call: retrofit2.Call<List<ApiService.Employeeinfo>>, t: Throwable) {
+                // Handle network failure
+                t.printStackTrace()
+            }
+        })
+    }
+
+
+    private fun prepareRVForEmployeesAdapter() {
+        employeeAdapter = EmployeesAdapter()
+        binding.rvemployees.apply {
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = employeeAdapter
+        }
     }
 
 

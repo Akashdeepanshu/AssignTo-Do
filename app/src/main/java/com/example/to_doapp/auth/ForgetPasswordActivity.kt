@@ -22,12 +22,12 @@ class ForgetPasswordActivity : AppCompatActivity() {
         setContentView(binding.root)
         enableEdgeToEdge()
 
-        // Back to Signin click
+
         binding.textView4.setOnClickListener {
             startActivity(Intent(this, SigninActivity::class.java))
         }
 
-        // Submit Reset Password
+
         binding.forgetpassbutton.setOnClickListener {
             val email = binding.emailInput.text.toString().trim()
 
