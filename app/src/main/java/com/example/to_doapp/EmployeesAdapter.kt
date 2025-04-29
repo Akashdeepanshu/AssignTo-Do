@@ -2,11 +2,13 @@ package com.example.to_doapp
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.to_doapp.databinding.ItemViewEmployeesProfileBinding
 import com.example.to_doapp.network.ApiService
+
 
 class EmployeesAdapter : RecyclerView.Adapter<EmployeesAdapter.EmployeeViewHolder>() {
 
@@ -45,5 +47,11 @@ class EmployeesAdapter : RecyclerView.Adapter<EmployeesAdapter.EmployeeViewHolde
     override fun onBindViewHolder(holder: EmployeeViewHolder, position: Int) {
         val employee = differ.currentList[position]
         holder.binding.employeename.text = employee.name
+
+
+        holder.itemView.setOnClickListener {
+            val action = EmployeesFragmentDirections.actionEmployeesFragmentToWorksFragment(employee)
+            Navigation.findNavController(it).navigate(action)
+        }
     }
 }

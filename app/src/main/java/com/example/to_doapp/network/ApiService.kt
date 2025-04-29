@@ -1,10 +1,13 @@
 package com.example.to_doapp.network
+import android.os.Parcelable
 import com.example.to_doapp.data.Task
+import kotlinx.parcelize.Parcelize
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
+
 
     data class RegisterUserRequest(
         val name: String,
@@ -21,7 +24,7 @@ interface ApiService {
         val email: String,
         val password: String
     )
-
+@Parcelize
     data class LoginResponse(
         val message: String,
         val user_type: String,
@@ -29,18 +32,28 @@ interface ApiService {
         val name: String,
         val email: String,
         val image_url: String?
+    ) : Parcelable
+
+    data class Task(
+        val title: String,
+        val description: String,
+        val lastDate: String,
+        val priority: String,
+        val employeeId: String,
+        val workRoom: String
     )
+
 
     data class ForgotPasswordRequest(
         val email: String
     )
-
+@Parcelize
     data class Employeeinfo(
         val _id: String = "",
         val name: String = "",
         val email: String = "",
         val password: String = "",
-    )
+    ) : Parcelable
 
     @GET("/get_employees")
     fun getAllEmployeeData(): Call<List<Employeeinfo>>
@@ -54,7 +67,7 @@ interface ApiService {
     fun forgotPassword(@Body request: ForgotPasswordRequest): Call<Void>
 
 
-    @POST("add_task")
+    @POST("/add_task")
     fun addTask(@Body task: Task): Call<ResponseBody>
 
     @GET("get_tasks/{user_id}")

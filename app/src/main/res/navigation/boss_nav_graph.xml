@@ -7,25 +7,36 @@
 
     <fragment
         android:id="@+id/employeesFragment"
-        android:name="com.example.to_doapp.employeesFragment"
+        android:name="com.example.to_doapp.EmployeesFragment"
         android:label="fragment_employees"
         tools:layout="@layout/fragment_employees" >
         <action
             android:id="@+id/action_employeesFragment_to_worksFragment"
             app:destination="@id/worksFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/worksFragment"
-        android:name="com.example.to_doapp.worksFragment"
+        android:name="com.example.to_doapp.WorksFragment"
         android:label="fragment_works"
         tools:layout="@layout/fragment_works" >
+
+
+        <argument
+            android:name="employeeData"
+            app:argType="com.example.to_doapp.network.ApiService$Employeeinfo" />
         <action
             android:id="@+id/action_worksFragment_to_assignWorkFragment"
             app:destination="@id/assignWorkFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/assignWorkFragment"
         android:name="com.example.to_doapp.assignWorkFragment"
         android:label="fragment_assign_work"
-        tools:layout="@layout/fragment_assign_work" />
+        tools:layout="@layout/fragment_assign_work" >
+        <argument
+            android:name="employeedetails"
+            app:argType="com.example.to_doapp.network.ApiService$Employeeinfo" />
+    </fragment>
 </navigation>

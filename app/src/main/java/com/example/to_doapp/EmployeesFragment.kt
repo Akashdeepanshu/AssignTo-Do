@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.to_doapp.auth.SigninActivity
 import com.example.to_doapp.databinding.FragmentEmployeesBinding
@@ -16,7 +15,7 @@ import com.example.to_doapp.network.ApiClient
 import com.example.to_doapp.network.ApiService
 
 
-class employeesFragment : Fragment() {
+class EmployeesFragment : Fragment() {
 
     private lateinit var binding: FragmentEmployeesBinding
     private lateinit var employeeAdapter: EmployeesAdapter
@@ -58,13 +57,13 @@ class employeesFragment : Fragment() {
                     val employeeList = response.body()
                     employeeAdapter.differ.submitList(employeeList)
                 } else {
-                    // Handle API failure (e.g. empty response)
+
                     println("Error: ${response.code()} ${response.message()}")
                 }
             }
 
             override fun onFailure(call: retrofit2.Call<List<ApiService.Employeeinfo>>, t: Throwable) {
-                // Handle network failure
+
                 t.printStackTrace()
             }
         })

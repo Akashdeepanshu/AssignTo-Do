@@ -3,6 +3,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="teal">#FF03DAC5</color>
+    <color name="yellow">#FFFFEB3B</color>
     <color name="green">#FF32CD32</color>
     <color name="red">#FFFF0000</color>
 <color name="hardBlue">#03045e</color>
@@ -13,6 +14,7 @@
     <color name="light2">#00b4d8</color>
     <color name="light3">#90e0ef</color>
     <color name="light4">#e0f0f8</color>
+
 
 
 </resources>

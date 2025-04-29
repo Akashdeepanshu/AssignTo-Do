@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.to_doapp
 
 import android.os.Bundle
@@ -6,10 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.to_doapp.databinding.FragmentWorksBinding
 
 
-class worksFragment : Fragment() {
+class WorksFragment : Fragment() {
+
+    val employedetails by navArgs<WorksFragmentArgs>()
 
     private lateinit var binding: FragmentWorksBinding
 
@@ -22,7 +27,15 @@ class worksFragment : Fragment() {
         binding = FragmentWorksBinding.inflate(layoutInflater)
 
         binding.fabAssignWork.setOnClickListener {
-            findNavController().navigate(R.id.action_worksFragment_to_assignWorkFragment)
+            val action = WorksFragmentDirections.actionWorksFragmentToAssignWorkFragment(
+                employedetails.employeeData,
+            )
+            findNavController().navigate(action)
+        }
+        val employee = employedetails.employeeData
+        binding.tbEmployee.apply {
+            title = employee.name
+            setNavigationOnClickListener {activity?.onBackPressed()}
         }
         return binding.root
 

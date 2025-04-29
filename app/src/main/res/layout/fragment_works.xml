@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".worksFragment">
+    tools:context=".WorksFragment">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/softBlue"
+        app:navigationIcon="@drawable/baseline_arrow_back_24"
         android:backgroundTint="@color/softBlue"
         android:elevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
