@@ -40,7 +40,8 @@ interface ApiService {
         val lastDate: String,
         val priority: String,
         val employeeId: String,
-        val workRoom: String
+        val workRoom: String,
+        val workStatus: String
     )
 
 
@@ -53,6 +54,18 @@ interface ApiService {
         val name: String = "",
         val email: String = "",
         val password: String = "",
+    ) : Parcelable
+
+    @Parcelize
+    data class Taskinfo(
+        val _id: String = "",
+        val title: String = "",
+        val description: String = "",
+        val lastDate: String = "",
+        val priority: String = "",
+        val employeeId: String = "",
+        val workRoom: String = "",
+        val workStatus: String = ""
     ) : Parcelable
 
     @GET("/get_employees")
@@ -70,7 +83,19 @@ interface ApiService {
     @POST("/add_task")
     fun addTask(@Body task: Task): Call<ResponseBody>
 
+    @DELETE("/unassign_task/{task_id}")
+    fun unassignTask(@Path("task_id") taskId: String): Call<Void>
+
+
     @GET("get_tasks/{user_id}")
-    fun getTasks(@Path("user_id") userId: String): Call<List<Task>>
+    fun getTasks(@Path("user_id") userId: String): Call<List<Taskinfo>>
+
+    @PUT("/update_task_status/{task_id}")
+    fun updateTaskStatus(
+        @Path("task_id") taskId: String,
+        @Body statusBody: Map<String, String>
+    ): Call<Void>
+
+
 }
 

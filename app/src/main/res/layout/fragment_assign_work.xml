@@ -51,7 +51,7 @@
                     android:padding="16dp"
                     android:maxLines="1"
                     android:background="@android:color/transparent"
-                    android:textColor="@color/light3"
+                    android:textColor="@color/black"
                     android:textColorHint="@color/softBlue" />
             </com.google.android.material.card.MaterialCardView>
 

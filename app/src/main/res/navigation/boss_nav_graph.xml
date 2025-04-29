@@ -38,5 +38,8 @@
         <argument
             android:name="employeedetails"
             app:argType="com.example.to_doapp.network.ApiService$Employeeinfo" />
+        <action
+            android:id="@+id/action_assignWorkFragment_to_worksFragment"
+            app:destination="@id/worksFragment" />
     </fragment>
 </navigation>

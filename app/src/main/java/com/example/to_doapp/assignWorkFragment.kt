@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.navigation.fragment.navArgs
 import com.example.to_doapp.databinding.FragmentAssignWorkBinding
 import com.example.to_doapp.databinding.FragmentWorksBinding
@@ -58,14 +59,14 @@ class assignWorkFragment : Fragment() {
                 val empId = employedetails.employeedetails._id
 
 
-
                 val task = ApiService.Task(
                     title = title,
                     description = desc,
                     lastDate = lastdate,
                     priority = priority,
                     employeeId = empId,
-                    workRoom = ""
+                    workRoom = "",
+                    workStatus = "1"
                 )
 
                 val apiService = ApiClient.instance
@@ -90,8 +91,6 @@ class assignWorkFragment : Fragment() {
                 })
             }
         }
-
-
 
         return binding.root
     }
